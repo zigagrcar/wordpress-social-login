@@ -202,7 +202,11 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			$cities     = (array) $this->api->api( 'database.getCitiesById' , 'GET', $params);
 			$city       = reset($cities);
 			if (is_array($city)) $city = reset($city);
-			$user->city = property_exists($city, 'name') ? $city->name : null;
+			if (is_object($city) && property_exists($city, 'name')) {
+				$user->city = $city->name;
+			} else {
+				$user->city = null;
+			}
 		}
 
 		if (property_exists($user, 'country') && $withAdditionalRequests) {
@@ -212,7 +216,11 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			$countries     = (array) $this->api->api( 'database.getCountriesById' , 'GET', $params);
 			$country       = reset($countries);
 			if (is_array($country)) $country = reset($country);
-			$user->country = property_exists($country, 'name') ? $country->name : null;
+			if (is_object($country) && property_exists($country, 'name')) {
+				$user->country = $country->name;
+			} else {
+				$user->country = null;
+			}
 		}
 
 		return $user;
