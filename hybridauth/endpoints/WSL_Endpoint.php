@@ -15,7 +15,7 @@ class WSL_Hybrid_Endpoint extends Hybrid_Endpoint
 
 		if ( is_null(Hybrid_Endpoint::$request) ){
 			// Fix a strange behavior when some provider call back ha endpoint
-			// with /index.php?hauth.done={provider}?{args}... 
+			// with /index.php?hauth_done={provider}?{args}...
 			// >here we need to recreate the $_REQUEST
 			if ( strrpos( $_SERVER["QUERY_STRING"], '?' ) ) {
 				$_SERVER["QUERY_STRING"] = str_replace( "?", "&", $_SERVER["QUERY_STRING"] );
@@ -26,16 +26,16 @@ class WSL_Hybrid_Endpoint extends Hybrid_Endpoint
 			Hybrid_Endpoint::$request = $_REQUEST;
 		}
 
-		// If we get a hauth.start
+		// If we get a hauth_start
 		if ( isset( WSL_Hybrid_Endpoint::$request["hauth_start"] ) && WSL_Hybrid_Endpoint::$request["hauth_start"] ) {
 			return WSL_Hybrid_Endpoint::processAuthStart();
 		}
 
-		// Else if hauth.done
+		// Else if hauth_done
 		elseif ( isset( WSL_Hybrid_Endpoint::$request["hauth_done"] ) && WSL_Hybrid_Endpoint::$request["hauth_done"] ) {
 			return WSL_Hybrid_Endpoint::processAuthDone();
 		}
-		
+
 		parent::process( $request );
 	}
 

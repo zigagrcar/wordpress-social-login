@@ -27,7 +27,7 @@ class Hybrid_Endpoint
 
 		if ( is_null(Hybrid_Endpoint::$request) ){
 			// Fix a strange behavior when some provider call back ha endpoint
-			// with /index.php?hauth.done={provider}?{args}... 
+			// with /index.php?hauth_done={provider}?{args}...
 			// >here we need to recreate the $_REQUEST
 			if ( strrpos( $_SERVER["QUERY_STRING"], '?' ) ) {
 				$_SERVER["QUERY_STRING"] = str_replace( "?", "&", $_SERVER["QUERY_STRING"] );
@@ -48,11 +48,11 @@ class Hybrid_Endpoint
 			Hybrid_Endpoint::processOpenidXRDS();
 		}
 
-		// If we get a hauth.start
+		// If we get a hauth_start
 		if ( isset( Hybrid_Endpoint::$request["hauth_start"] ) && Hybrid_Endpoint::$request["hauth_start"] ) {
 			Hybrid_Endpoint::processAuthStart();
 		}
-		// Else if hauth.done
+		// Else if hauth_done
 		elseif ( isset( Hybrid_Endpoint::$request["hauth_done"] ) && Hybrid_Endpoint::$request["hauth_done"] ) {
 			Hybrid_Endpoint::processAuthDone();
 		}
