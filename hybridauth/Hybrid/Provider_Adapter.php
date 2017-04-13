@@ -148,14 +148,14 @@ class Hybrid_Provider_Adapter
 		# for default HybridAuth endpoint url hauth_login_start_url
 		# 	auth.start  required  the IDp ID
 		# 	auth.time   optional  login request timestamp
-		$this->params["login_start"] = $HYBRID_AUTH_URL_BASE . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth_start={$this->id}&hauth_time={$this->params["hauth_time"]}";
+		$this->params["login_start"] = $HYBRID_AUTH_URL_BASE . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth.start={$this->id}&hauth.time={$this->params["hauth_time"]}";
 
 		# for default HybridAuth endpoint url hauth_login_done_url
 		# 	auth.done   required  the IDp ID
-		$this->params["login_done"]  = $HYBRID_AUTH_URL_BASE . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth_done={$this->id}";
+		$this->params["login_done"]  = $HYBRID_AUTH_URL_BASE . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth.done={$this->id}";
 
 		if( isset( $this->config["endpoint"] ) ){
-			$this->params["login_start"] = $this->config["endpoint"] . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth_start={$this->id}&hauth_time={$this->params["hauth_time"]}";
+			$this->params["login_start"] = $this->config["endpoint"] . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth.start={$this->id}&hauth.time={$this->params["hauth_time"]}";
 			$this->params["login_done"]  = $this->config["endpoint"];
         }
 
@@ -189,7 +189,7 @@ class Hybrid_Provider_Adapter
 
 	/**
 	* return true if the user is connected to the current provider
-	*/
+	*/ 
 	public function isUserConnected()
 	{
 		return $this->adapter->isUserConnected();
@@ -287,7 +287,7 @@ class Hybrid_Provider_Adapter
 	* return the provider config by id
 	*/
 	function getConfigById( $id )
-	{
+	{ 
 		if( isset( Hybrid_Auth::$config["providers"][$id] ) ){
 			return Hybrid_Auth::$config["providers"][$id];
 		}
