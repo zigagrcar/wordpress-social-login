@@ -221,7 +221,8 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
                 'email',
                 'hometown',
                 'location',
-                'birthday'
+                'birthday',
+                'verified',
             ];
             $response = $this->api->get('/me?fields=' . implode(',', $fields), $this->token('access_token'));
             $data = $response->getDecodedBody();
