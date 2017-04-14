@@ -1,8 +1,9 @@
 <?php
 
-$root = $_SERVER['DOCUMENT_ROOT'];
+// $root = $_SERVER['DOCUMENT_ROOT']; // For facebook SDK installed in Wordpress root dir
+$root = __DIR__; // For facebook SDK installed in plugin root dir
 
-@require_once $root . '/vendor/autoload.php';
+require_once $root . '/../../../vendor/autoload.php';
 
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook as FacebookSDK;
