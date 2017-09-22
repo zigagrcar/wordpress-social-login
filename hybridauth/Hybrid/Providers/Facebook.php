@@ -1,9 +1,12 @@
 <?php
 
-// $root = $_SERVER['DOCUMENT_ROOT']; // For facebook SDK installed in Wordpress root dir
-$root = __DIR__; // For facebook SDK installed in plugin root dir
+$facebook_autoloader = dirname( __FILE__ ) . "/../thirdparty/Facebook/autoload.php";
 
-require_once $root . '/../../../vendor/autoload.php';
+if( ! file_exists($facebook_autoloader) ){
+	die( "Error: couldn't include Facebook autoloader." );
+}
+
+require_once $facebook_autoloader;
 
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook as FacebookSDK;
@@ -28,7 +31,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
      * @link https://developers.facebook.com/docs/facebook-login/permissions
      * @var array $scope
      */
-    public $scope = ['email', 'public_profile'];
+    public $scope = [ 'public_profile', 'email' ];
 
     /**
      * Provider API client
@@ -47,14 +50,14 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
             throw new Exception("Your application id and secret are required in order to connect to {$this->providerId}.", 4);
         }
 
-        // if (isset($this->config['scope'])) {
-        //     $scope = $this->config['scope'];
-        //     if (is_string($scope)) {
-        //         $scope = explode(",", $scope);
-        //     }
-        //     $scope = array_map('trim', $scope);
-        //     $this->scope = $scope;
-        // }
+        if (isset($this->config['scope'])) {
+            $scope = $this->config['scope'];
+            if (is_string($scope)) {
+                $scope = explode(",", $scope);
+            }
+            $scope = array_map('trim', $scope);
+            $this->scope = $scope;
+        }
 
         $trustForwarded = isset($this->config['trustForwarded']) ? (bool)$this->config['trustForwarded'] : false;
 
@@ -72,6 +75,8 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
     function loginBegin() {
 
         $this->endpoint = $this->params['login_done'];
+        $this->endpoint = str_replace('?hauth.done=Facebook','?hauth_done=Facebook', $this->endpoint);
+
         $helper = $this->api->getRedirectLoginHelper();
 
         // Use re-request, because this will trigger permissions window if not all permissions are granted.
@@ -88,7 +93,8 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 
         $helper = $this->api->getRedirectLoginHelper();
         try {
-            $accessToken = $helper->getAccessToken($this->params['login_done']);
+			$this->endpoint = str_replace('?hauth.done=Facebook','?hauth_done=Facebook', $this->endpoint);
+            $accessToken = $helper->getAccessToken($this->endpoint);
         } catch (Facebook\Exceptions\FacebookResponseException $e) {
             throw new Hybrid_Exception('Facebook Graph returned an error: ' . $e->getMessage());
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
@@ -130,81 +136,6 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
     }
 
     /**
-    * Update user status
-    *
-    * @param mixed  $status An array describing the status, or string
-    * @param string $pageid (optional) User page id
-    * @return array
-    * @throw Exception
-    */
-    function setUserStatus($status, $pageid = null) {
-
-      if (!is_array($status)) {
-          $status = array('message' => $status);
-      }
-
-      $access_token = null;
-
-      if (is_null($pageid)) {
-          $pageid = 'me';
-          $access_token = $this->token('access_token');
-
-          // if post on page, get access_token page
-      } else {
-
-          foreach ($this->getUserPages(true) as $p) {
-              if (isset($p['id']) && intval($p['id']) == intval($pageid)) {
-                  $access_token = $p['access_token'];
-                  break;
-              }
-          }
-
-          if (is_null($access_token)) {
-              throw new Exception("Update user page failed, page not found or not writable!");
-          }
-      }
-
-      try {
-          $response = $this->api->post('/' . $pageid . '/feed', $status, $access_token);
-      } catch (FacebookSDKException $e) {
-          throw new Exception("Update user status failed! {$this->providerId} returned an error {$e->getMessage()}", 0, $e);
-      }
-
-      return $response;
-    }
-
-    /**
-    * {@inheridoc}
-    */
-   function getUserPages($writableonly = false) {
-       if (( isset($this->config['scope']) && strpos($this->config['scope'], 'manage_pages') === false ) || (!isset($this->config['scope']) && strpos($this->scope, 'manage_pages') === false ))
-           throw new Exception("User status requires manage_page permission!");
-
-       try {
-           $pages = $this->api->get("/me/accounts", $this->token('access_token'));
-       } catch (FacebookApiException $e) {
-           throw new Exception("Cannot retrieve user pages! {$this->providerId} returned an error: {$e->getMessage()}", 0, $e);
-       }
-
-       if (!isset($pages['data'])) {
-           return array();
-       }
-
-       if (!$writableonly) {
-           return $pages['data'];
-       }
-
-       $wrpages = array();
-       foreach ($pages['data'] as $p) {
-           if (isset($p['perms']) && in_array('CREATE_CONTENT', $p['perms'])) {
-               $wrpages[] = $p;
-           }
-       }
-
-       return $wrpages;
-    }
-
-    /**
      * {@inheritdoc}
      */
     function getUserProfile() {
@@ -222,8 +153,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
                 'email',
                 'hometown',
                 'location',
-                'birthday',
-                'verified',
+                'birthday'
             ];
             $response = $this->api->get('/me?fields=' . implode(',', $fields), $this->token('access_token'));
             $data = $response->getDecodedBody();
