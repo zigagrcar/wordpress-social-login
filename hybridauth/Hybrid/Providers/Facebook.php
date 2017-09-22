@@ -50,14 +50,16 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
             throw new Exception("Your application id and secret are required in order to connect to {$this->providerId}.", 4);
         }
 
-        if (isset($this->config['scope'])) {
-            $scope = $this->config['scope'];
-            if (is_string($scope)) {
-                $scope = explode(",", $scope);
-            }
-            $scope = array_map('trim', $scope);
-            $this->scope = $scope;
-        }
+        /*
+		 * if (isset($this->config['scope'])) {
+         *     $scope = $this->config['scope'];
+         *     if (is_string($scope)) {
+         *         $scope = explode(",", $scope);
+         *     }
+         *     $scope = array_map('trim', $scope);
+         *     $this->scope = $scope;
+         * }
+		 */
 
         $trustForwarded = isset($this->config['trustForwarded']) ? (bool)$this->config['trustForwarded'] : false;
 
@@ -153,7 +155,8 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
                 'email',
                 'hometown',
                 'location',
-                'birthday'
+                'birthday',
+				'verified',
             ];
             $response = $this->api->get('/me?fields=' . implode(',', $fields), $this->token('access_token'));
             $data = $response->getDecodedBody();
