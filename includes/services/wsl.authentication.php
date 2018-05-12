@@ -677,7 +677,7 @@ function wsl_process_login_create_wp_user( $provider, $hybridauth_user_profile, 
 
 		'first_name'    => $hybridauth_user_profile->firstName,
 		'last_name'     => $hybridauth_user_profile->lastName,
-		'user_url'      => $hybridauth_user_profile->profileURL,
+		'user_url'      => strlen( $hybridauth_user_profile->profileURL ) <= 100 ? $hybridauth_user_profile->profileURL : '',
 		'description'   => $hybridauth_user_profile->description,
 
 		'user_pass'     => wp_generate_password()
