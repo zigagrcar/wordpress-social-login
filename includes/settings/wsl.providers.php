@@ -225,7 +225,7 @@ $WORDPRESS_SOCIAL_LOGIN_PROVIDERS_CONFIG = ARRAY(
 	),
 	ARRAY( 
 		"provider_id"       => "Mailru",
-		"provider_name"     => "Mailru", 
+		"provider_name"     => "Mail.ru", 
 		"require_client_id" => true,
 		"callback"          => true,
 		"new_app_link"      => "http://api.mail.ru/", 
@@ -234,7 +234,7 @@ $WORDPRESS_SOCIAL_LOGIN_PROVIDERS_CONFIG = ARRAY(
 	),
 	ARRAY( 
 		"provider_id"       => "Yandex",
-		"provider_name"     => "Yandex", 
+		"provider_name"     => "Яндекс", 
 		"require_client_id" => true,
 		"callback"          => true,
 		"new_app_link"      => "https://oauth.yandex.ru", 

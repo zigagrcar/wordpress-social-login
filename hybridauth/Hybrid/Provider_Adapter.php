@@ -7,11 +7,11 @@
 
 /**
  * Hybrid_Provider_Adapter is the basic class which Hybrid_Auth will use
- * to connect users to a given provider. 
- * 
+ * to connect users to a given provider.
+ *
  * Basically Hybrid_Provider_Adapter will create a bridge from your php
  * application to the provider api.
- * 
+ *
  * Hybrid_Auth will automatically load Hybrid_Provider_Adapter and create
  * an instance of it for each authenticated provider.
  */
@@ -33,7 +33,7 @@ class Hybrid_Provider_Adapter
 	 * Provider adapter extra parameters
 	 * @var array
 	 */
-	public $params   = array() ; 
+	public $params   = array() ;
 
 	/**
 	 * Provider adapter wrapper path
@@ -53,7 +53,7 @@ class Hybrid_Provider_Adapter
 	* create a new adapter switch IDp name or ID
 	*
 	* @param string  $id      The id or name of the IDp
-	* @param array   $params  (optional) required parameters by the adapter 
+	* @param array   $params  (optional) required parameters by the adapter
 	*/
 	function factory( $id, $params = array() )
 	{
@@ -65,12 +65,12 @@ class Hybrid_Provider_Adapter
 
 		# check the IDp id
 		if( ! $this->id ){
-			throw new Exception( "No provider ID specified.", 2 ); 
+			throw new Exception( "No provider ID specified.", 2 );
 		}
 
 		# check the IDp config
 		if( ! $this->config ){
-			throw new Exception( "Unknown Provider ID, check your configuration file.", 3 ); 
+			throw new Exception( "Unknown Provider ID, check your configuration file.", 3 );
 		}
 
 		# check the IDp adapter is enabled
@@ -92,10 +92,10 @@ class Hybrid_Provider_Adapter
 		}
 		else{
 			$path_providers = realpath( dirname( __FILE__ ) )  . "/Providers/";
-			
+
 			require_once $path_providers . $this->id . ".php" ;
 
-			$this->wrapper = "Hybrid_Providers_" . $this->id; 
+			$this->wrapper = "Hybrid_Providers_" . $this->id;
 		}
 
 		# create the adapter instance, and pass the current params and config
@@ -153,6 +153,10 @@ class Hybrid_Provider_Adapter
 		# for default HybridAuth endpoint url hauth_login_done_url
 		# 	auth.done   required  the IDp ID
 		$this->params["login_done"]  = $HYBRID_AUTH_URL_BASE . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth.done={$this->id}";
+        if ($this->id == 'Facebook')
+        {
+            $this->params["login_done"]  = $HYBRID_AUTH_URL_BASE . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth_done={$this->id}";
+        }
 
 		if( isset( $this->config["endpoint"] ) ){
 			$this->params["login_start"] = $this->config["endpoint"] . ( strpos( $HYBRID_AUTH_URL_BASE, '?' ) ? '&' : '?' ) . "hauth.start={$this->id}&hauth.time={$this->params["hauth_time"]}";
@@ -164,12 +168,12 @@ class Hybrid_Provider_Adapter
         }
 
         if( isset( $this->params["login_done"] ) ){
-            Hybrid_Auth::storage()->set( "hauth_session.{$this->id}.hauth_endpoint" , $this->params["login_done"] ); 
+            Hybrid_Auth::storage()->set( "hauth_session.{$this->id}.hauth_endpoint" , $this->params["login_done"] );
         }
 
         Hybrid_Auth::storage()->set( "hauth_session.{$this->id}.id_provider_params" , $this->params );
 
-		// store config to be used by the end point 
+		// store config to be used by the end point
 		Hybrid_Auth::storage()->config( "CONFIG", Hybrid_Auth::$config );
 
 		Hybrid_Auth::redirect( $this->params["login_start"] );
@@ -189,7 +193,7 @@ class Hybrid_Provider_Adapter
 
 	/**
 	* return true if the user is connected to the current provider
-	*/ 
+	*/
 	public function isUserConnected()
 	{
 		return $this->adapter->isUserConnected();
@@ -201,14 +205,14 @@ class Hybrid_Provider_Adapter
 	* handle :
 	*   getUserProfile()
 	*   getUserContacts()
-	*   getUserActivity() 
-	*   setUserStatus() 
-	*/ 
-	public function __call( $name, $arguments ) 
+	*   getUserActivity()
+	*   setUserStatus()
+	*/
+	public function __call( $name, $arguments )
 	{
 		if ( ! $this->isUserConnected() ){
 			throw new Exception( "User not connected to the provider {$this->id}.", 7 );
-		} 
+		}
 
 		if ( ! method_exists( $this->adapter, $name ) ){
 			throw new Exception( "Call to undefined function Hybrid_Providers_{$this->id}::$name()." );
@@ -216,13 +220,13 @@ class Hybrid_Provider_Adapter
 
         $counter = count( $arguments );
         if( $counter == 1 ){
-            return $this->adapter->$name( $arguments[0] ); 
+            return $this->adapter->$name( $arguments[0] );
         }
         elseif( $counter == 2 ){
-            return $this->adapter->$name( $arguments[0], $arguments[1] ); 
+            return $this->adapter->$name( $arguments[0], $arguments[1] );
         }
         else{
-            return $this->adapter->$name(); 
+            return $this->adapter->$name();
         }
 	}
 
@@ -268,7 +272,7 @@ class Hybrid_Provider_Adapter
 	* redirect the user to hauth_return_to (the callback url)
 	*/
 	function returnToCallbackUrl()
-	{ 
+	{
 		// get the stored callback url
 		$callback_url = Hybrid_Auth::storage()->get( "hauth_session.{$this->id}.hauth_return_to" );
 
@@ -287,7 +291,7 @@ class Hybrid_Provider_Adapter
 	* return the provider config by id
 	*/
 	function getConfigById( $id )
-	{ 
+	{
 		if( isset( Hybrid_Auth::$config["providers"][$id] ) ){
 			return Hybrid_Auth::$config["providers"][$id];
 		}
