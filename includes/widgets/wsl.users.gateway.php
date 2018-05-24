@@ -301,7 +301,8 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				color:#fff
 			}
 			input[type="text"],
-			input[type="password"]{
+			input[type="password"],
+			select{
 				border: 1px solid #e5e5e5;
 				box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
 				color: #555;
@@ -323,6 +324,10 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 			}
 			input[type="submit"]{
 				float:right;
+			}
+			select{
+				height: 38px;
+				width: calc(100% + 8px);
 			}
 			label{
 				color:#777;
