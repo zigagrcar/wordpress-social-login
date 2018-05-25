@@ -480,6 +480,7 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				toggleEl( 'mapping-complete-info'    , 'block' );
 			}
 		</script>
+		<?php do_action( 'wsl_head' ); ?>
 	</head>
 	<body>
 		<div id="login">
@@ -661,6 +662,7 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				wsl_display_dev_mode_debugging_area();
 			}
 		?>
+		<?php do_action( 'wsl_footer' ); ?>
 	</body>
 </html>
 <?php
