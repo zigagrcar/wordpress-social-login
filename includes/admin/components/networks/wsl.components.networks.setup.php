@@ -249,7 +249,7 @@ function wsl_component_networks_setup()
 								<p><?php echo "<b>" . ++$setupsteps . "</b>." ?> <?php _wsl_e("Select <b>Add a New App</b> from the <b>Apps</b> menu at the top", 'wordpress-social-login') ?>.</p>
 								<p><?php echo "<b>" . ++$setupsteps . "</b>." ?> <?php _wsl_e("Fill out Display Name, Contact Email and click <b>Create App ID</b>", 'wordpress-social-login') ?>.</p>
 								<p><?php echo "<b>" . ++$setupsteps . "</b>." ?> <?php _wsl_e("Set Up <b>Facebook Login</b> and select <b>Web</b> option", 'wordpress-social-login') ?>.</p>
-								<p><?php echo "<b>" . ++$setupsteps . "</b>." ?> <?php _wsl_e("Fill out <b>Site URL</b> and save it (that's all for Quickstart)", 'wordpress-social-login') ?>. <?php _wsl_e("This should match with the current hostname", 'wordpress-social-login') ?> <em style="color:#CB4B16;"><?php echo $_SERVER["SERVER_NAME"]; ?></em>.</p>
+								<p><?php echo "<b>" . ++$setupsteps . "</b>." ?> <?php _wsl_e("Fill out <b>Site URL</b> and save it (that's all for Quickstart)", 'wordpress-social-login') ?>. <?php _wsl_e("This should match with the current hostname", 'wordpress-social-login') ?> <em style="color:#CB4B16;"><?php echo $_SERVER["SERVER_NAME"]; ?></em>. <?php _wsl_e("<b>Make sure that you're using HTTPS for all of your links!</b>", 'wordpress-social-login') ?></p>
 								<p><?php echo "<b>" . ++$setupsteps . "</b>." ?> <?php _wsl_e("<b>Facebook</b> normally shouldn't require an Authorized redirect URI, however if it did, use both of those urls on <b>Facebook Login</b> > <b>Settings</b> > <b>Valid OAuth redirect URIs</b>:", 'wordpress-social-login') ?>.</p>
 								<ul style="margin-left:35px">
 									<li><?php echo $provider_callback_url ?></li>
