@@ -300,8 +300,18 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				box-shadow:inset 0 1px 0 rgba(120,200,230,.6);
 				color:#fff
 			}
-			input[type="text"],
+			input:not([type]),
+			input[type="date"],
+			input[type="datetime-local"],
+			input[type="email"],
+			input[type="number"],
 			input[type="password"],
+			input[type="search"],
+			input[type="tel"],
+			input[type="time"],
+			input[type="text"],
+			input[type="file"],
+			input[type="url"],
 			select{
 				border: 1px solid #e5e5e5;
 				box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
@@ -316,8 +326,19 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				padding: 3px;
 				width: 100%;
 			}
+			input:not([type]):focus,
+			input[type="date"]:focus,
+			input[type="datetime-local"]:focus,
+			input[type="email"]:focus,
+			input[type="number"]:focus,
+			input[type="password"]:focus,
+			input[type="search"]:focus,
+			input[type="tel"]:focus,
+			input[type="time"]:focus,
 			input[type="text"]:focus,
-			input[type="password"]:focus{
+			input[type="file"]:focus,
+			input[type="url"]:focus,
+			select:focus{
 				border-color:#5b9dd9;
 				-webkit-box-shadow:0 0 2px rgba(30,140,190,.8);
 				box-shadow:0 0 2px rgba(30,140,190,.8)
