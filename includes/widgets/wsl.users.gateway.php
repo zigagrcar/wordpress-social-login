@@ -300,6 +300,9 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				box-shadow:inset 0 1px 0 rgba(120,200,230,.6);
 				color:#fff
 			}
+			.field {
+				margin-bottom: 16px;
+			}
 			input:not([type]),
 			input[type="date"],
 			input[type="datetime-local"],
@@ -317,14 +320,13 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
 				color: #555;
 				font-size: 17px;
-				height: 30px;
-				line-height: 1;
 				margin-bottom: 16px;
 				margin-right: 6px;
 				margin-top: 2px;
 				outline: 0 none;
-				padding: 3px;
+				padding: 0.67857143em 1em;
 				width: 100%;
+				box-sizing: border-box;
 			}
 			input:not([type]):focus,
 			input[type="date"]:focus,
@@ -347,8 +349,7 @@ function wsl_process_login_new_users_gateway( $provider, $redirect_to, $hybridau
 				float:right;
 			}
 			select{
-				height: 38px;
-				width: calc(100% + 8px);
+				height: 2.35714286em;
 			}
 			label{
 				color:#777;
